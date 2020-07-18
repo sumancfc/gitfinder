@@ -1,23 +1,23 @@
 {
   "files": {
     "main.css": "/gitfinder/static/css/main.3b010753.chunk.css",
-    "main.js": "/gitfinder/static/js/main.c5b1d0db.chunk.js",
-    "main.js.map": "/gitfinder/static/js/main.c5b1d0db.chunk.js.map",
+    "main.js": "/gitfinder/static/js/main.6a4a2041.chunk.js",
+    "main.js.map": "/gitfinder/static/js/main.6a4a2041.chunk.js.map",
     "runtime-main.js": "/gitfinder/static/js/runtime-main.781843ed.js",
     "runtime-main.js.map": "/gitfinder/static/js/runtime-main.781843ed.js.map",
-    "static/js/2.13defe9e.chunk.js": "/gitfinder/static/js/2.13defe9e.chunk.js",
-    "static/js/2.13defe9e.chunk.js.map": "/gitfinder/static/js/2.13defe9e.chunk.js.map",
+    "static/js/2.e50671da.chunk.js": "/gitfinder/static/js/2.e50671da.chunk.js",
+    "static/js/2.e50671da.chunk.js.map": "/gitfinder/static/js/2.e50671da.chunk.js.map",
     "index.html": "/gitfinder/index.html",
-    "precache-manifest.af09400d468ee42052b38e4b6ad9c48e.js": "/gitfinder/precache-manifest.af09400d468ee42052b38e4b6ad9c48e.js",
+    "precache-manifest.e5ead893d52aa37553d41b84d3210568.js": "/gitfinder/precache-manifest.e5ead893d52aa37553d41b84d3210568.js",
     "service-worker.js": "/gitfinder/service-worker.js",
     "static/css/main.3b010753.chunk.css.map": "/gitfinder/static/css/main.3b010753.chunk.css.map",
-    "static/js/2.13defe9e.chunk.js.LICENSE.txt": "/gitfinder/static/js/2.13defe9e.chunk.js.LICENSE.txt",
+    "static/js/2.e50671da.chunk.js.LICENSE.txt": "/gitfinder/static/js/2.e50671da.chunk.js.LICENSE.txt",
     "static/media/spinner.gif": "/gitfinder/static/media/spinner.8e505e42.gif"
   },
   "entrypoints": [
     "static/js/runtime-main.781843ed.js",
-    "static/js/2.13defe9e.chunk.js",
+    "static/js/2.e50671da.chunk.js",
     "static/css/main.3b010753.chunk.css",
-    "static/js/main.c5b1d0db.chunk.js"
+    "static/js/main.6a4a2041.chunk.js"
   ]
 }
