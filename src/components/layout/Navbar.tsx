@@ -1,8 +1,12 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-const Navbar = ({ icon, title }) => {
+interface Props {
+  icon?: string;
+  title?: string;
+}
+
+const Navbar = ({ icon = 'fa fa-home', title = 'Gitfinder' }: Props) => {
   return (
     <nav className='navbar bg-primary'>
       <h1>
@@ -21,16 +25,6 @@ const Navbar = ({ icon, title }) => {
       </ul>
     </nav>
   );
-};
-
-Navbar.defaultProps = {
-  title: "Gitfinder",
-  icon: "fa fa-home",
-};
-
-Navbar.propTypes = {
-  title: PropTypes.string.isRequired,
-  icon: PropTypes.string.isRequired,
 };
 
 export default Navbar;

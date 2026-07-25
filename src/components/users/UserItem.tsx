@@ -1,8 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { GithubUser } from '../../types';
 
-const UserItem = ({ user: { login, html_url, avatar_url } }) => {
+interface Props {
+  user: GithubUser;
+}
+
+const UserItem = ({ user: { login, avatar_url } }: Props) => {
   return (
     <div className='card text-center'>
       <img
@@ -19,10 +23,6 @@ const UserItem = ({ user: { login, html_url, avatar_url } }) => {
       </div>
     </div>
   );
-};
-
-UserItem.propTypes = {
-  user: PropTypes.object.isRequired,
 };
 
 export default UserItem;

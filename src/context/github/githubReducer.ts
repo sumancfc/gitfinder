@@ -5,8 +5,23 @@ import {
   SET_LOADING,
   CLEAR_USERS,
 } from '../types';
+import { GithubUser, Repo } from '../../types';
 
-export default (state, action) => {
+export interface GithubState {
+  users: GithubUser[];
+  user: Partial<GithubUser>;
+  repos: Repo[];
+  loading: boolean;
+}
+
+export type GithubAction =
+  | { type: typeof SEARCH_USERS; payload: GithubUser[] }
+  | { type: typeof GET_USER; payload: GithubUser }
+  | { type: typeof GET_REPOS; payload: Repo[] }
+  | { type: typeof CLEAR_USERS }
+  | { type: typeof SET_LOADING };
+
+export default (state: GithubState, action: GithubAction): GithubState => {
   switch (action.type) {
     case SEARCH_USERS:
       return {
