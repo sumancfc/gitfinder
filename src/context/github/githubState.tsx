@@ -1,7 +1,7 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, ReactNode } from 'react';
 import axios from 'axios';
 import GithubContext from './githubContext';
-import GithubReducer from './githubReducer';
+import GithubReducer, { GithubState as GithubStateType } from './githubReducer';
 import {
   SEARCH_USERS,
   GET_USER,
@@ -9,9 +9,14 @@ import {
   SET_LOADING,
   CLEAR_USERS,
 } from '../types';
+import { GithubUser, Repo } from '../../types';
 
-const GithubState = (props) => {
-  const initialState = {
+interface Props {
+  children: ReactNode;
+}
+
+const GithubState = (props: Props) => {
+  const initialState: GithubStateType = {
     users: [],
     user: {},
     repos: [],
@@ -21,9 +26,9 @@ const GithubState = (props) => {
   const [state, dispatch] = useReducer(GithubReducer, initialState);
 
   //SEARCH_USER
-  const searchUsers = async (text) => {
+  const searchUsers = async (text: string) => {
     setLoading();
-    const res = await axios.get(
+    const res = await axios.get<{ items: GithubUser[] }>(
       `https://api.github.com/search/users?q=${text}&client_id=${process.env.REACT_APP_CLIENT_ID}&client_secret=${process.env.REACT_APP_CLIENT_SECRET}`
     );
 
@@ -34,10 +39,10 @@ const GithubState = (props) => {
   };
 
   //GET_USER
-  const getUser = async (username) => {
+  const getUser = async (username: string) => {
     setLoading();
 
-    const res = await axios.get(
+    const res = await axios.get<GithubUser>(
       `https://api.github.com/users/${username}?client_id=${process.env.REACT_APP_CLIENT_ID}&client_secret=${process.env.REACT_APP_CLIENT_SECRET}`
     );
 
@@ -48,10 +53,10 @@ const GithubState = (props) => {
   };
 
   //GET_REPOS
-  const getUserRepos = async (username) => {
+  const getUserRepos = async (username: string) => {
     setLoading();
 
-    const res = await axios.get(
+    const res = await axios.get<Repo[]>(
       `https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${process.env.REACT_APP_CLIENT_ID}&client_secret=${process.env.REACT_APP_CLIENT_SECRET}`
     );
 
