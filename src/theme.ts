@@ -39,6 +39,14 @@ const theme = extendTheme({
         backgroundAttachment: 'fixed, fixed, fixed',
         backgroundPosition: 'center top, center, center',
       },
+      '@media (prefers-reduced-motion: reduce)': {
+        '*, *::before, *::after': {
+          animationDuration: '0.001ms !important',
+          animationIterationCount: '1 !important',
+          transitionDuration: '0.001ms !important',
+          scrollBehavior: 'auto !important',
+        },
+      },
     },
   },
 });

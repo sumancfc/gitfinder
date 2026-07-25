@@ -1,16 +1,51 @@
-import React, { useContext } from 'react';
-import { Box, SimpleGrid, Text } from '@chakra-ui/react';
+import React, { useContext, useEffect, useState } from 'react';
+import {
+  Box,
+  SimpleGrid,
+  Text,
+  Button,
+  VStack,
+  VisuallyHidden,
+  Alert,
+  AlertIcon,
+  AlertDescription,
+} from '@chakra-ui/react';
 import UserItem from './UserItem';
 import { UsersSkeleton } from '../layout/Skeleton';
 import GithubContext from '../../context/github/githubContext';
 
+const PAGE_SIZE = 12;
+const LOAD_MORE_SIZE = 8;
+
 const Users = () => {
   const githubContext = useContext(GithubContext);
 
-  const { loading, users } = githubContext;
+  const { loading, error, users } = githubContext;
+
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE);
+  }, [users]);
 
   if (loading) {
-    return <UsersSkeleton />;
+    return (
+      <>
+        <VisuallyHidden aria-live='polite' role='status'>
+          Loading results&hellip;
+        </VisuallyHidden>
+        <UsersSkeleton />
+      </>
+    );
+  }
+
+  if (error) {
+    return (
+      <Alert status='error' borderRadius='lg'>
+        <AlertIcon />
+        <AlertDescription>{error}</AlertDescription>
+      </Alert>
+    );
   }
 
   if (users.length === 0) {
@@ -24,18 +59,43 @@ const Users = () => {
         py={12}
         px={6}
       >
-        <Box as='i' className='fa fa-github' fontSize='4xl' color='gray.500' mb={3} display='block' />
+        <Box
+          as='i'
+          className='fa fa-github'
+          fontSize='4xl'
+          color='gray.500'
+          mb={3}
+          display='block'
+          aria-hidden='true'
+        />
         <Text color='gray.400'>Search for a GitHub username to see results here.</Text>
       </Box>
     );
   }
 
+  const visibleUsers = users.slice(0, visibleCount);
+  const hasMore = visibleCount < users.length;
+
   return (
-    <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing={5}>
-      {users.map((user) => (
-        <UserItem key={user.id} user={user} />
-      ))}
-    </SimpleGrid>
+    <VStack align='stretch' spacing={6}>
+      <VisuallyHidden aria-live='polite' role='status'>
+        {users.length} result{users.length === 1 ? '' : 's'} found, showing {visibleUsers.length}.
+      </VisuallyHidden>
+      <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing={5}>
+        {visibleUsers.map((user) => (
+          <UserItem key={user.id} user={user} />
+        ))}
+      </SimpleGrid>
+      {hasMore && (
+        <Button
+          alignSelf='center'
+          variant='outline'
+          onClick={() => setVisibleCount((c) => c + LOAD_MORE_SIZE)}
+        >
+          Load more
+        </Button>
+      )}
+    </VStack>
   );
 };
 

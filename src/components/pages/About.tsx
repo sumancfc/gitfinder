@@ -1,5 +1,15 @@
-import React from 'react';
-import { Box, SimpleGrid, VStack, Wrap, WrapItem, Heading, Text, Badge } from '@chakra-ui/react';
+import React, { useEffect } from 'react';
+import {
+  Box,
+  SimpleGrid,
+  VStack,
+  Wrap,
+  WrapItem,
+  Heading,
+  Text,
+  Badge,
+  VisuallyHidden,
+} from '@chakra-ui/react';
 
 const features = [
   {
@@ -39,10 +49,14 @@ const cardProps = {
 };
 
 const About = () => {
+  useEffect(() => {
+    document.title = 'Hublens — About';
+  }, []);
+
   return (
     <Box>
       <VStack textAlign='center' py={{ base: 6, md: 10 }} spacing={3}>
-        <Heading size='xl'>About Hublens</Heading>
+        <Heading as='h1' size='xl'>About Hublens</Heading>
         <Text color='gray.400' fontSize='lg' maxW='600px'>
           Hublens is a lightweight tool for searching GitHub users and
           exploring their public profiles and repositories, without leaving
@@ -50,11 +64,12 @@ const About = () => {
         </Text>
       </VStack>
 
+      <VisuallyHidden as='h2'>Features</VisuallyHidden>
       <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing={5} mb={4}>
         {features.map((f) => (
           <Box key={f.title} {...cardProps} mb={0} textAlign='left'>
-            <Box as='i' className={f.icon} color='brand.400' fontSize='2xl' mb={2} display='block' />
-            <Heading size='sm' mb={2}>
+            <Box as='i' className={f.icon} color='brand.400' fontSize='2xl' mb={2} display='block' aria-hidden='true' />
+            <Heading as='h3' size='sm' mb={2}>
               {f.title}
             </Heading>
             <Text color='gray.400'>{f.text}</Text>
@@ -63,7 +78,7 @@ const About = () => {
       </SimpleGrid>
 
       <Box {...cardProps}>
-        <Heading size='md' mb={2}>
+        <Heading as='h2' size='md' mb={2}>
           How it works
         </Heading>
         <Text color='gray.400'>
@@ -75,7 +90,7 @@ const About = () => {
       </Box>
 
       <Box {...cardProps} mb={0}>
-        <Heading size='md' mb={3}>
+        <Heading as='h2' size='md' mb={3}>
           Built with
         </Heading>
         <Wrap>

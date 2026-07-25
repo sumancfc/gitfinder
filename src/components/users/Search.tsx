@@ -1,5 +1,5 @@
 import React, { useState, useContext, FormEvent, ChangeEvent } from 'react';
-import { Box, HStack, Input, Button } from '@chakra-ui/react';
+import { Box, HStack, Input, Button, VisuallyHidden } from '@chakra-ui/react';
 import GithubContext from '../../context/github/githubContext';
 import AlertContext from '../../context/alert/alertContext';
 
@@ -25,6 +25,8 @@ const Search = () => {
     <Box>
       <Box
         as='form'
+        role='search'
+        aria-label='Search GitHub users'
         onSubmit={onSubmit}
         bg='gray.800'
         border='1px solid'
@@ -34,7 +36,11 @@ const Search = () => {
         p={2}
       >
         <HStack spacing={2}>
+          <VisuallyHidden as='label' htmlFor='github-username-search'>
+            Search a GitHub username
+          </VisuallyHidden>
           <Input
+            id='github-username-search'
             type='text'
             name='text'
             value={text}
@@ -64,7 +70,7 @@ const Search = () => {
           width='100%'
           mt={3}
           onClick={githubContext.clearUsers}
-          leftIcon={<i className='fa fa-times' />}
+          leftIcon={<i className='fa fa-times' aria-hidden='true' />}
         >
           Clear results
         </Button>

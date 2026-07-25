@@ -40,11 +40,11 @@ const UserItem = ({ user: { login, avatar_url, html_url, type } }: Props) => {
           href={html_url}
           isExternal
           aria-label={`Open ${login} on GitHub`}
-          icon={<i className='fa fa-github' />}
-          size='sm'
+          icon={<i className='fa fa-github' aria-hidden='true' />}
+          size='md'
           variant='outline'
         />
-        <Button as={RouterLink} to={`/user/${login}`} colorScheme='brand' size='sm'>
+        <Button as={RouterLink} to={`/user/${login}`} colorScheme='brand' size='md'>
           View Profile
         </Button>
       </HStack>
