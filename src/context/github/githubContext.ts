@@ -6,6 +6,7 @@ export interface GithubContextType {
   user: Partial<GithubUser>;
   repos: Repo[];
   loading: boolean;
+  error: string | null;
   searchUsers: (text: string) => Promise<void>;
   getUser: (username: string) => Promise<void>;
   getUserRepos: (username: string) => Promise<void>;

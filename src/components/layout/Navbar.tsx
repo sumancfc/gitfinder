@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link as RouterLink, NavLink } from 'react-router-dom';
-import { Flex, Box, Heading, HStack, Link } from '@chakra-ui/react';
+import { Flex, Box, HStack, Link } from '@chakra-ui/react';
 
 interface Props {
   icon?: string;
@@ -42,29 +42,33 @@ const Navbar = ({ icon = 'fa fa-github', title = 'Hublens' }: Props) => {
         px={{ base: 4, md: 6 }}
         py={3}
       >
-        <Heading as='h1' size='md'>
-          <Link
-            as={RouterLink}
-            to='/'
-            display='flex'
-            alignItems='center'
-            _hover={{ color: 'brand.300', textDecoration: 'none' }}
+        <Link
+          as={RouterLink}
+          to='/'
+          display='flex'
+          alignItems='center'
+          fontSize='1.125rem'
+          fontWeight='800'
+          letterSpacing='-0.01em'
+          _hover={{ color: 'brand.300', textDecoration: 'none' }}
+          _focus={{ boxShadow: 'none' }}
+          _focusVisible={{ boxShadow: '0 0 0 3px var(--chakra-colors-brand-400)' }}
+        >
+          <Flex
+            align='center'
+            justify='center'
+            boxSize='34px'
+            borderRadius='full'
+            bg='brand.900'
+            color='brand.300'
+            fontSize='16px'
+            mr={2}
+            aria-hidden='true'
           >
-            <Flex
-              align='center'
-              justify='center'
-              boxSize='34px'
-              borderRadius='full'
-              bg='brand.900'
-              color='brand.300'
-              fontSize='16px'
-              mr={2}
-            >
-              <Box as='i' className={icon}></Box>
-            </Flex>
-            {title}
-          </Link>
-        </Heading>
+            <Box as='i' className={icon}></Box>
+          </Flex>
+          {title}
+        </Link>
         <HStack as='ul' spacing={1} listStyleType='none'>
           <Box as='li'>
             <Link
@@ -75,6 +79,8 @@ const Navbar = ({ icon = 'fa fa-github', title = 'Hublens' }: Props) => {
               style={navLinkStyle}
               color='gray.400'
               _hover={{ color: 'gray.100', bg: 'gray.700', textDecoration: 'none' }}
+              _focus={{ boxShadow: 'none' }}
+              _focusVisible={{ boxShadow: '0 0 0 3px var(--chakra-colors-brand-400)' }}
             >
               Home
             </Link>
@@ -87,6 +93,8 @@ const Navbar = ({ icon = 'fa fa-github', title = 'Hublens' }: Props) => {
               style={navLinkStyle}
               color='gray.400'
               _hover={{ color: 'gray.100', bg: 'gray.700', textDecoration: 'none' }}
+              _focus={{ boxShadow: 'none' }}
+              _focusVisible={{ boxShadow: '0 0 0 3px var(--chakra-colors-brand-400)' }}
             >
               About
             </Link>

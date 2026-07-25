@@ -14,7 +14,7 @@ interface UsersSkeletonProps {
 }
 
 export const UsersSkeleton = ({ count = 8 }: UsersSkeletonProps) => (
-  <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing={5}>
+  <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing={5} aria-hidden='true'>
     {Array.from({ length: count }).map((_, i) => (
       <VStack
         key={i}
@@ -38,7 +38,7 @@ export const UsersSkeleton = ({ count = 8 }: UsersSkeletonProps) => (
 );
 
 export const ProfileSkeleton = () => (
-  <Box>
+  <Box aria-hidden='true'>
     <Skeleton height='38px' width='160px' borderRadius='md' mb={4} />
     <SimpleGrid
       columns={{ base: 1, md: 2 }}

@@ -19,9 +19,9 @@ const ReposItem = ({ repo }: Props) => {
       transition='all 0.2s ease'
       _hover={{ transform: 'translateY(-6px)', boxShadow: 'dark-lg', borderColor: 'brand.400' }}
     >
-      <Heading size='sm'>
+      <Heading as='h3' size='sm'>
         <Link href={repo.html_url} isExternal _hover={{ textDecoration: 'none', color: 'brand.300' }}>
-          <Box as='i' className='fa fa-code-fork' color='brand.400' mr={2} />
+          <Box as='i' className='fa fa-code-fork' color='brand.400' mr={2} aria-hidden='true' />
           {repo.name}
         </Link>
       </Heading>

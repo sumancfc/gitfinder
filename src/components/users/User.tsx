@@ -14,6 +14,10 @@ import {
   Divider,
   List,
   ListItem,
+  VisuallyHidden,
+  Alert,
+  AlertIcon,
+  AlertDescription,
 } from '@chakra-ui/react';
 import Repos from '../repos/Repos';
 import { ProfileSkeleton } from '../layout/Skeleton';
@@ -23,12 +27,18 @@ type Props = RouteComponentProps<{ login: string }>;
 
 const User = ({ match }: Props) => {
   const githubContext = useContext(GithubContext);
-  const { getUser, loading, user, repos, getUserRepos } = githubContext;
+  const { getUser, loading, error, user, repos, getUserRepos } = githubContext;
+  const { login: routeLogin } = match.params;
+
   useEffect(() => {
-    getUser(match.params.login);
-    getUserRepos(match.params.login);
+    document.title = `${routeLogin} · Hublens`;
+
+    (async () => {
+      await getUser(routeLogin);
+      await getUserRepos(routeLogin);
+    })();
     //eslint-disable-next-line
-  }, []);
+  }, [routeLogin]);
 
   const {
     name,
@@ -46,14 +56,43 @@ const User = ({ match }: Props) => {
     hireable,
   } = user;
 
-  if (loading) return <ProfileSkeleton />;
+  if (loading) {
+    return (
+      <>
+        <VisuallyHidden aria-live='polite' role='status'>
+          Loading profile&hellip;
+        </VisuallyHidden>
+        <ProfileSkeleton />
+      </>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box>
+        <Alert status='error' borderRadius='lg' mb={4}>
+          <AlertIcon />
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+        <Button
+          as={RouterLink}
+          to='/'
+          variant='outline'
+          leftIcon={<i className='fa fa-arrow-left' aria-hidden='true' />}
+        >
+          Back to Search
+        </Button>
+      </Box>
+    );
+  }
+
   return (
     <Box>
       <Button
         as={RouterLink}
         to='/'
         variant='outline'
-        leftIcon={<i className='fa fa-arrow-left' />}
+        leftIcon={<i className='fa fa-arrow-left' aria-hidden='true' />}
         mb={4}
       >
         Back to Search
@@ -71,22 +110,24 @@ const User = ({ match }: Props) => {
         mb={4}
       >
         <VStack textAlign='center'>
-          <Avatar src={avatar_url} name={name} boxSize='150px' />
-          <Heading size='lg'>{name}</Heading>
+          <Avatar src={avatar_url} name={name || login} boxSize='150px' />
+          <Heading as='h1' size='lg'>{name || login}</Heading>
           <Text color='gray.400'>Location: {location}</Text>
           <HStack>
             <Text>Hireable:</Text>
-            {hireable ? (
-              <Box as='i' className='fa fa-check' color='green.400' />
-            ) : (
-              <Box as='i' className='fa fa-times-circle' color='red.400' />
-            )}
+            <Box as='span' role='img' aria-label={hireable ? 'Yes' : 'No'}>
+              {hireable ? (
+                <Box as='i' className='fa fa-check' color='green.400' aria-hidden='true' />
+              ) : (
+                <Box as='i' className='fa fa-times-circle' color='red.400' aria-hidden='true' />
+              )}
+            </Box>
           </HStack>
         </VStack>
         <Box>
           {bio && (
             <Box mb={3}>
-              <Heading size='sm' mb={1}>
+              <Heading as='h2' size='sm' mb={1}>
                 Bio
               </Heading>
               <Text color='gray.300'>{bio}</Text>
@@ -101,7 +142,7 @@ const User = ({ match }: Props) => {
             bg='gray.100'
             color='gray.900'
             _hover={{ bg: 'gray.300' }}
-            leftIcon={<i className='fa fa-github' />}
+            leftIcon={<i className='fa fa-github' aria-hidden='true' />}
             my={3}
           >
             Go to Git
@@ -133,6 +174,7 @@ const User = ({ match }: Props) => {
         </Box>
       </SimpleGrid>
 
+      <VisuallyHidden as='h2'>Profile statistics</VisuallyHidden>
       <HStack
         justify='center'
         wrap='wrap'
@@ -153,11 +195,14 @@ const User = ({ match }: Props) => {
         <Badge colorScheme='gray' fontSize='0.85em' px={3} py={1} borderRadius='full'>
           Public Repos: {public_repos}
         </Badge>
-        <Badge colorScheme='whiteAlpha' fontSize='0.85em' px={3} py={1} borderRadius='full'>
+        <Badge colorScheme='purple' fontSize='0.85em' px={3} py={1} borderRadius='full'>
           Public Gists: {public_gists}
         </Badge>
       </HStack>
 
+      <Heading as='h2' size='md' mb={3}>
+        Repositories
+      </Heading>
       <Repos repos={repos} />
     </Box>
   );
