@@ -3,6 +3,7 @@ export interface GithubUser {
   login: string;
   avatar_url: string;
   html_url: string;
+  type?: string;
   name?: string;
   company?: string | null;
   location?: string | null;

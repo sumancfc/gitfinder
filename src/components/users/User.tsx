@@ -1,7 +1,22 @@
-import React, { useEffect, Fragment, useContext } from 'react';
-import { RouteComponentProps, Link } from 'react-router-dom';
+import React, { useEffect, useContext } from 'react';
+import { RouteComponentProps, Link as RouterLink } from 'react-router-dom';
+import {
+  Box,
+  SimpleGrid,
+  VStack,
+  HStack,
+  Avatar,
+  Heading,
+  Text,
+  Badge,
+  Button,
+  Link,
+  Divider,
+  List,
+  ListItem,
+} from '@chakra-ui/react';
 import Repos from '../repos/Repos';
-import Spinner from '../layout/Spinner';
+import { ProfileSkeleton } from '../layout/Skeleton';
 import GithubContext from '../../context/github/githubContext';
 
 type Props = RouteComponentProps<{ login: string }>;
@@ -31,74 +46,120 @@ const User = ({ match }: Props) => {
     hireable,
   } = user;
 
-  if (loading) return <Spinner />;
+  if (loading) return <ProfileSkeleton />;
   return (
-    <Fragment>
-      <Link to='/gitfinder' className='btn btn-light'>
+    <Box>
+      <Button
+        as={RouterLink}
+        to='/'
+        variant='outline'
+        leftIcon={<i className='fa fa-arrow-left' />}
+        mb={4}
+      >
         Back to Search
-      </Link>
+      </Button>
 
-      <div className='card grid-2'>
-        <div className='all-center'>
-          <img
-            src={avatar_url}
-            className='round-img'
-            alt='Avatar'
-            style={{ width: '150px' }}
-          />
-          <h1>{name}</h1>
-          <p>Location: {location}</p>
-          <p>Hireable: {''}</p>
-          {hireable ? (
-            <i className='fa fa-check text-success' />
-          ) : (
-            <i className='fa fa-times-circle text-danger' />
-          )}
-        </div>
-        <div>
+      <SimpleGrid
+        columns={{ base: 1, md: 2 }}
+        spacing={6}
+        bg='gray.800'
+        border='1px solid'
+        borderColor='gray.700'
+        borderRadius='2xl'
+        boxShadow='md'
+        p={6}
+        mb={4}
+      >
+        <VStack textAlign='center'>
+          <Avatar src={avatar_url} name={name} boxSize='150px' />
+          <Heading size='lg'>{name}</Heading>
+          <Text color='gray.400'>Location: {location}</Text>
+          <HStack>
+            <Text>Hireable:</Text>
+            {hireable ? (
+              <Box as='i' className='fa fa-check' color='green.400' />
+            ) : (
+              <Box as='i' className='fa fa-times-circle' color='red.400' />
+            )}
+          </HStack>
+        </VStack>
+        <Box>
           {bio && (
-            <Fragment>
-              <h2>Bio</h2>
-              {bio}
-            </Fragment>
+            <Box mb={3}>
+              <Heading size='sm' mb={1}>
+                Bio
+              </Heading>
+              <Text color='gray.300'>{bio}</Text>
+            </Box>
           )}
-          <hr></hr>
-          <a href={html_url} className='btn btn-dark my-1'>
+          <Divider />
+          <Button
+            as={Link}
+            href={html_url}
+            isExternal
+            colorScheme='blackAlpha'
+            bg='gray.100'
+            color='gray.900'
+            _hover={{ bg: 'gray.300' }}
+            leftIcon={<i className='fa fa-github' />}
+            my={3}
+          >
             Go to Git
-          </a>
-          <ul>
-            <li>
-              {login && (
-                <Fragment>
-                  <strong>Username</strong>: {login}
-                </Fragment>
-              )}
-            </li>
-            <li>
-              {company && (
-                <Fragment>
-                  <strong>Company</strong>: {company}
-                </Fragment>
-              )}
-            </li>
-            <li>
-              {blog && (
-                <Fragment>
-                  <strong>Website</strong>: {blog}
-                </Fragment>
-              )}
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div className='card text-center'>
-        <div className='badge badge-primary'>Followers : {followers}</div>
-        <div className='badge badge-success'>Following : {following}</div>
-        <div className='badge badge-light'>Public Repos : {public_repos}</div>
-        <div className='badge badge-dark'>Public Gists : {public_gists}</div>
-      </div>
+          </Button>
+          <List spacing={2}>
+            {login && (
+              <ListItem>
+                <strong>Username</strong>: {login}
+              </ListItem>
+            )}
+            {company && (
+              <ListItem>
+                <strong>Company</strong>: {company}
+              </ListItem>
+            )}
+            {blog && (
+              <ListItem>
+                <strong>Website</strong>:{' '}
+                <Link
+                  href={/^https?:\/\//i.test(blog) ? blog : `https://${blog}`}
+                  isExternal
+                  color='brand.300'
+                >
+                  {blog}
+                </Link>
+              </ListItem>
+            )}
+          </List>
+        </Box>
+      </SimpleGrid>
+
+      <HStack
+        justify='center'
+        wrap='wrap'
+        bg='gray.800'
+        border='1px solid'
+        borderColor='gray.700'
+        borderRadius='2xl'
+        boxShadow='md'
+        p={6}
+        mb={4}
+      >
+        <Badge colorScheme='brand' fontSize='0.85em' px={3} py={1} borderRadius='full'>
+          Followers: {followers}
+        </Badge>
+        <Badge colorScheme='green' fontSize='0.85em' px={3} py={1} borderRadius='full'>
+          Following: {following}
+        </Badge>
+        <Badge colorScheme='gray' fontSize='0.85em' px={3} py={1} borderRadius='full'>
+          Public Repos: {public_repos}
+        </Badge>
+        <Badge colorScheme='whiteAlpha' fontSize='0.85em' px={3} py={1} borderRadius='full'>
+          Public Gists: {public_gists}
+        </Badge>
+      </HStack>
+
       <Repos repos={repos} />
-    </Fragment>
+    </Box>
   );
 };
 

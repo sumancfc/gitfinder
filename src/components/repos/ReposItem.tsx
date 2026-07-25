@@ -1,4 +1,5 @@
 import React from 'react';
+import { Box, Heading, Link } from '@chakra-ui/react';
 import { Repo } from '../../types';
 
 interface Props {
@@ -7,11 +8,24 @@ interface Props {
 
 const ReposItem = ({ repo }: Props) => {
   return (
-    <div className='card'>
-      <h3>
-        <a href={repo.html_url}>{repo.name}</a>
-      </h3>
-    </div>
+    <Box
+      bg='gray.800'
+      border='1px solid'
+      borderColor='gray.700'
+      borderRadius='2xl'
+      boxShadow='md'
+      p={5}
+      mb={3}
+      transition='all 0.2s ease'
+      _hover={{ transform: 'translateY(-6px)', boxShadow: 'dark-lg', borderColor: 'brand.400' }}
+    >
+      <Heading size='sm'>
+        <Link href={repo.html_url} isExternal _hover={{ textDecoration: 'none', color: 'brand.300' }}>
+          <Box as='i' className='fa fa-code-fork' color='brand.400' mr={2} />
+          {repo.name}
+        </Link>
+      </Heading>
+    </Box>
   );
 };
 
