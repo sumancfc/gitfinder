@@ -1,13 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, VStack, Heading, Text } from '@chakra-ui/react';
 import Users from '../users/Users';
 import Search from '../users/Search';
 import SearchHistory from '../users/SearchHistory';
+import { useSearchUsers } from '../../hooks/useGithubQueries';
 
 const Home = () => {
   useEffect(() => {
     document.title = 'Hublens — Find GitHub Users';
   }, []);
+
+  // The submitted search term lives here (not in Search or Users) because
+  // both children need it: Search needs it to know whether there are
+  // results to clear, Users needs it to actually run the query.
+  const [query, setQuery] = useState('');
+  const usersQuery = useSearchUsers(query);
+  const users = usersQuery.data ?? [];
 
   return (
     <Box>
@@ -17,11 +25,15 @@ const Home = () => {
           Search any GitHub username to see their profile and repositories.
         </Text>
         <Box w='100%' maxW='560px' pt={2}>
-          <Search />
-          <SearchHistory />
+          <Search onSearch={setQuery} hasResults={users.length > 0} onClear={() => setQuery('')} />
+          <SearchHistory onSelect={setQuery} />
         </Box>
       </VStack>
-      <Users />
+      <Users
+        users={users}
+        isLoading={usersQuery.isLoading && query.trim().length > 0}
+        error={usersQuery.error?.message ?? null}
+      />
     </Box>
   );
 };
