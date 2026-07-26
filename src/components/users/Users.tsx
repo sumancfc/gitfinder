@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   SimpleGrid,
@@ -12,23 +12,25 @@ import {
 } from '@chakra-ui/react';
 import UserItem from './UserItem';
 import { UsersSkeleton } from '../layout/Skeleton';
-import GithubContext from '../../context/github/githubContext';
+import { GithubUser } from '../../types';
 
 const PAGE_SIZE = 12;
 const LOAD_MORE_SIZE = 8;
 
-const Users = () => {
-  const githubContext = useContext(GithubContext);
+interface Props {
+  users: GithubUser[];
+  isLoading: boolean;
+  error: string | null;
+}
 
-  const { loading, error, users } = githubContext;
-
+const Users = ({ users, isLoading, error }: Props) => {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
   }, [users]);
 
-  if (loading) {
+  if (isLoading) {
     return (
       <>
         <VisuallyHidden aria-live='polite' role='status'>

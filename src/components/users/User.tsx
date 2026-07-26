@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
 import { RouteComponentProps, Link as RouterLink } from 'react-router-dom';
 import {
   Box,
@@ -22,25 +22,29 @@ import {
 } from '@chakra-ui/react';
 import Repos from '../repos/Repos';
 import { ProfileSkeleton } from '../layout/Skeleton';
-import GithubContext from '../../context/github/githubContext';
+import { useGithubUser, useGithubUserRepos } from '../../hooks/useGithubQueries';
+import { GithubUser } from '../../types';
 
 type Props = RouteComponentProps<{ login: string }>;
 
 const User = ({ match }: Props) => {
-  const githubContext = useContext(GithubContext);
-  const { getUser, loading, error, user, repos, getUserRepos } = githubContext;
   const linkColor = useColorModeValue('brand.600', 'brand.300');
   const { login: routeLogin } = match.params;
 
+  // Two independent queries instead of one sequential await-await — repo
+  // data and profile data now load in parallel and cache separately, keyed
+  // on routeLogin. Revisit a profile you already viewed and it's instant.
+  const userQuery = useGithubUser(routeLogin);
+  const reposQuery = useGithubUserRepos(routeLogin);
+
   useEffect(() => {
     document.title = `${routeLogin} · Hublens`;
-
-    (async () => {
-      await getUser(routeLogin);
-      await getUserRepos(routeLogin);
-    })();
-    //eslint-disable-next-line
   }, [routeLogin]);
+
+  const loading = userQuery.isLoading || reposQuery.isLoading;
+  const error = userQuery.error?.message ?? reposQuery.error?.message ?? null;
+  const user: Partial<GithubUser> = userQuery.data ?? {};
+  const repos = reposQuery.data ?? [];
 
   const {
     name,

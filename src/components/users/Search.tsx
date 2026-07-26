@@ -1,10 +1,14 @@
 import React, { useState, useContext, FormEvent, ChangeEvent } from 'react';
 import { Box, HStack, Input, Button, VisuallyHidden, useColorModeValue } from '@chakra-ui/react';
-import GithubContext from '../../context/github/githubContext';
 import AlertContext from '../../context/alert/alertContext';
 
-const Search = () => {
-  const githubContext = useContext(GithubContext);
+interface Props {
+  onSearch: (text: string) => void;
+  hasResults: boolean;
+  onClear: () => void;
+}
+
+const Search = ({ onSearch, hasResults, onClear }: Props) => {
   const alertContext = useContext(AlertContext);
 
   const [text, setText] = useState('');
@@ -14,7 +18,7 @@ const Search = () => {
     if (text === '') {
       alertContext.setAlert('Please Enter Value', 'light');
     } else {
-      githubContext.searchUsers(text);
+      onSearch(text);
       setText('');
     }
   };
@@ -73,12 +77,12 @@ const Search = () => {
           </Button>
         </HStack>
       </Box>
-      {githubContext.users.length > 0 && (
+      {hasResults && (
         <Button
           variant='outline'
           width='100%'
           mt={3}
-          onClick={githubContext.clearUsers}
+          onClick={onClear}
           leftIcon={<i className='fa fa-times' aria-hidden='true' />}
         >
           Clear results

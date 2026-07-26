@@ -7,13 +7,16 @@ import {
   useLocation,
 } from 'react-router-dom';
 import { Container, Box } from '@chakra-ui/react';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import Navbar from './components/layout/Navbar';
 import User from './components/users/User';
 import Alert from './components/layout/Alert';
 import Home from './components/pages/Home';
 import About from './components/pages/About';
 
-import GithubState from './context/github/githubState';
+import { queryClient } from './queryClient';
+import { HistoryProvider } from './context/history/HistoryContext';
 import AlertState from './context/alert/AlertState';
 
 interface FocusOnRouteChangeProps {
@@ -43,48 +46,53 @@ const App = () => {
   const mainRef = useRef<HTMLDivElement>(null);
 
   return (
-    <GithubState>
-      <AlertState>
-        <Router basename={process.env.PUBLIC_URL}>
-          <Box
-            as='a'
-            href='#main-content'
-            position='absolute'
-            left='-9999px'
-            top='auto'
-            zIndex='banner'
-            bg='brand.500'
-            color='white'
-            px={4}
-            py={2}
-            borderRadius='md'
-            _focus={{ left: 4, top: 4, position: 'fixed' }}
-          >
-            Skip to main content
-          </Box>
-          <FocusOnRouteChange targetRef={mainRef} />
-          <Navbar />
-          <Container
-            as='main'
-            id='main-content'
-            ref={mainRef}
-            tabIndex={-1}
-            maxW='1100px'
-            px={{ base: 4, md: 6 }}
-            pb={12}
-            _focus={{ boxShadow: 'none', outline: 'none' }}
-          >
-            <Alert />
-            <Switch>
-              <Route exact path='/' component={Home} />
-              <Route exact path='/about' component={About} />
-              <Route exact path='/user/:login' component={User} />
-              <Redirect from='/gitfinder' to='/' />
-            </Switch>
-          </Container>
-        </Router>
-      </AlertState>
-    </GithubState>
+    <QueryClientProvider client={queryClient}>
+      <HistoryProvider>
+        <AlertState>
+          <Router basename={process.env.PUBLIC_URL}>
+            <Box
+              as='a'
+              href='#main-content'
+              position='absolute'
+              left='-9999px'
+              top='auto'
+              zIndex='banner'
+              bg='brand.500'
+              color='white'
+              px={4}
+              py={2}
+              borderRadius='md'
+              _focus={{ left: 4, top: 4, position: 'fixed' }}
+            >
+              Skip to main content
+            </Box>
+            <FocusOnRouteChange targetRef={mainRef} />
+            <Navbar />
+            <Container
+              as='main'
+              id='main-content'
+              ref={mainRef}
+              tabIndex={-1}
+              maxW='1100px'
+              px={{ base: 4, md: 6 }}
+              pb={12}
+              _focus={{ boxShadow: 'none', outline: 'none' }}
+            >
+              <Alert />
+              <Switch>
+                <Route exact path='/' component={Home} />
+                <Route exact path='/about' component={About} />
+                <Route exact path='/user/:login' component={User} />
+                <Redirect from='/gitfinder' to='/' />
+              </Switch>
+            </Container>
+          </Router>
+        </AlertState>
+      </HistoryProvider>
+      {/* Devtools panel (dev-mode only, bottom-left flower icon) — inspect
+          every cached query, its status, and staleness live. */}
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   );
 };
 

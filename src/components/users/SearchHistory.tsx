@@ -1,9 +1,13 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Box, Wrap, WrapItem, Tag, TagLabel, TagCloseButton, Text, Button, HStack } from '@chakra-ui/react';
-import GithubContext from '../../context/github/githubContext';
+import { useSearchHistory } from '../../context/history/HistoryContext';
 
-const SearchHistory = () => {
-  const { history, searchUsers, removeFromHistory, clearHistory } = useContext(GithubContext);
+interface Props {
+  onSelect: (username: string) => void;
+}
+
+const SearchHistory = ({ onSelect }: Props) => {
+  const { history, removeFromHistory, clearHistory } = useSearchHistory();
 
   if (history.length === 0) return null;
 
@@ -24,7 +28,7 @@ const SearchHistory = () => {
               <TagLabel
                 as='button'
                 type='button'
-                onClick={() => searchUsers(username)}
+                onClick={() => onSelect(username)}
                 cursor='pointer'
               >
                 {username}

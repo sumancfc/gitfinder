@@ -2,8 +2,9 @@ import React, { ReactElement } from 'react';
 import { render } from '@testing-library/react';
 import { ChakraProvider } from '@chakra-ui/react';
 import { MemoryRouter } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import theme from './theme';
-import GithubState from './context/github/githubState';
+import { HistoryProvider } from './context/history/HistoryContext';
 import AlertState from './context/alert/AlertState';
 
 interface Options {
@@ -11,14 +12,23 @@ interface Options {
 }
 
 export const renderWithProviders = (ui: ReactElement, { route = '/' }: Options = {}) => {
+  // A fresh QueryClient per render — tests shouldn't share cache state with
+  // each other, and disabling retries keeps failed-request tests fast
+  // instead of waiting through retry backoff.
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false } },
+  });
+
   return render(
-    <ChakraProvider theme={theme}>
-      <GithubState>
-        <AlertState>
-          <MemoryRouter initialEntries={[route]}>{ui}</MemoryRouter>
-        </AlertState>
-      </GithubState>
-    </ChakraProvider>
+    <QueryClientProvider client={queryClient}>
+      <ChakraProvider theme={theme}>
+        <HistoryProvider>
+          <AlertState>
+            <MemoryRouter initialEntries={[route]}>{ui}</MemoryRouter>
+          </AlertState>
+        </HistoryProvider>
+      </ChakraProvider>
+    </QueryClientProvider>
   );
 };
 
