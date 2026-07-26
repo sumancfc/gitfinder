@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Box, VStack, Heading, Text } from '@chakra-ui/react';
 import Users from '../users/Users';
 import Search from '../users/Search';
+import SearchHistory from '../users/SearchHistory';
 
 const Home = () => {
   useEffect(() => {
@@ -17,6 +18,7 @@ const Home = () => {
         </Text>
         <Box w='100%' maxW='560px' pt={2}>
           <Search />
+          <SearchHistory />
         </Box>
       </VStack>
       <Users />

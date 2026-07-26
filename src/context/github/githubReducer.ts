@@ -4,9 +4,14 @@ import {
   GET_REPOS,
   SET_LOADING,
   SET_ERROR,
+  ADD_TO_HISTORY,
+  REMOVE_FROM_HISTORY,
+  CLEAR_HISTORY,
   CLEAR_USERS,
 } from '../types';
 import { GithubUser, Repo } from '../../types';
+
+export const HISTORY_LIMIT = 8;
 
 export interface GithubState {
   users: GithubUser[];
@@ -14,6 +19,7 @@ export interface GithubState {
   repos: Repo[];
   loading: boolean;
   error: string | null;
+  history: string[];
 }
 
 export type GithubAction =
@@ -22,7 +28,10 @@ export type GithubAction =
   | { type: typeof GET_REPOS; payload: Repo[] }
   | { type: typeof CLEAR_USERS }
   | { type: typeof SET_LOADING }
-  | { type: typeof SET_ERROR; payload: string };
+  | { type: typeof SET_ERROR; payload: string }
+  | { type: typeof ADD_TO_HISTORY; payload: string }
+  | { type: typeof REMOVE_FROM_HISTORY; payload: string }
+  | { type: typeof CLEAR_HISTORY };
 
 export default (state: GithubState, action: GithubAction): GithubState => {
   switch (action.type) {
@@ -70,6 +79,30 @@ export default (state: GithubState, action: GithubAction): GithubState => {
         ...state,
         loading: false,
         error: action.payload,
+      };
+
+    case ADD_TO_HISTORY: {
+      const withoutExisting = state.history.filter(
+        (entry) => entry.toLowerCase() !== action.payload.toLowerCase()
+      );
+      return {
+        ...state,
+        history: [action.payload, ...withoutExisting].slice(0, HISTORY_LIMIT),
+      };
+    }
+
+    case REMOVE_FROM_HISTORY:
+      return {
+        ...state,
+        history: state.history.filter(
+          (entry) => entry.toLowerCase() !== action.payload.toLowerCase()
+        ),
+      };
+
+    case CLEAR_HISTORY:
+      return {
+        ...state,
+        history: [],
       };
 
     default:
