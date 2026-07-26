@@ -12,7 +12,7 @@ const Home = () => {
     <Box>
       <VStack textAlign='center' py={{ base: 8, md: 14 }} spacing={4}>
         <Heading as='h1' size='2xl'>Find GitHub Users</Heading>
-        <Text color='gray.400' fontSize='lg' maxW={{ base: '420px', md: 'none' }} whiteSpace={{ md: 'nowrap' }}>
+        <Text color='muted' fontSize='lg' maxW={{ base: '420px', md: 'none' }} whiteSpace={{ md: 'nowrap' }}>
           Search any GitHub username to see their profile and repositories.
         </Text>
         <Box w='100%' maxW='560px' pt={2}>

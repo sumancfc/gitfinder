@@ -1,6 +1,16 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { VStack, HStack, Avatar, Heading, Badge, Button, IconButton, Link } from '@chakra-ui/react';
+import {
+  VStack,
+  HStack,
+  Avatar,
+  Heading,
+  Badge,
+  Button,
+  IconButton,
+  Link,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import { GithubUser } from '../../types';
 
 interface Props {
@@ -8,11 +18,19 @@ interface Props {
 }
 
 const UserItem = ({ user: { login, avatar_url, html_url, type } }: Props) => {
+  // Chakra's default solid+brand button is already mode-aware (light bg +
+  // dark text in dark mode), but brand.500 + white text falls just short of
+  // 4.5:1 in light mode. Only override light mode; leave dark mode as-is.
+  const solidOverride = useColorModeValue(
+    { bg: 'brand.600', _hover: { bg: 'brand.700' }, _active: { bg: 'brand.800' } },
+    {}
+  );
+
   return (
     <VStack
-      bg='gray.800'
+      bg='surface'
       border='1px solid'
-      borderColor='gray.700'
+      borderColor='border-subtle'
       borderRadius='2xl'
       boxShadow='md'
       p={6}
@@ -44,7 +62,13 @@ const UserItem = ({ user: { login, avatar_url, html_url, type } }: Props) => {
           size='md'
           variant='outline'
         />
-        <Button as={RouterLink} to={`/user/${login}`} colorScheme='brand' size='md'>
+        <Button
+          as={RouterLink}
+          to={`/user/${login}`}
+          colorScheme='brand'
+          {...solidOverride}
+          size='md'
+        >
           View Profile
         </Button>
       </HStack>
