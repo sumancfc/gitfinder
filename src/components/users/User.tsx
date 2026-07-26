@@ -18,6 +18,7 @@ import {
   Alert,
   AlertIcon,
   AlertDescription,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import Repos from '../repos/Repos';
 import { ProfileSkeleton } from '../layout/Skeleton';
@@ -28,6 +29,7 @@ type Props = RouteComponentProps<{ login: string }>;
 const User = ({ match }: Props) => {
   const githubContext = useContext(GithubContext);
   const { getUser, loading, error, user, repos, getUserRepos } = githubContext;
+  const linkColor = useColorModeValue('brand.600', 'brand.300');
   const { login: routeLogin } = match.params;
 
   useEffect(() => {
@@ -101,9 +103,9 @@ const User = ({ match }: Props) => {
       <SimpleGrid
         columns={{ base: 1, md: 2 }}
         spacing={6}
-        bg='gray.800'
+        bg='surface'
         border='1px solid'
-        borderColor='gray.700'
+        borderColor='border-subtle'
         borderRadius='2xl'
         boxShadow='md'
         p={6}
@@ -112,7 +114,7 @@ const User = ({ match }: Props) => {
         <VStack textAlign='center'>
           <Avatar src={avatar_url} name={name || login} boxSize='150px' />
           <Heading as='h1' size='lg'>{name || login}</Heading>
-          <Text color='gray.400'>Location: {location}</Text>
+          <Text color='muted'>Location: {location}</Text>
           <HStack>
             <Text>Hireable:</Text>
             <Box as='span' role='img' aria-label={hireable ? 'Yes' : 'No'}>
@@ -130,7 +132,7 @@ const User = ({ match }: Props) => {
               <Heading as='h2' size='sm' mb={1}>
                 Bio
               </Heading>
-              <Text color='gray.300'>{bio}</Text>
+              <Text color='muted'>{bio}</Text>
             </Box>
           )}
           <Divider />
@@ -164,7 +166,7 @@ const User = ({ match }: Props) => {
                 <Link
                   href={/^https?:\/\//i.test(blog) ? blog : `https://${blog}`}
                   isExternal
-                  color='brand.300'
+                  color={linkColor}
                 >
                   {blog}
                 </Link>
@@ -178,9 +180,9 @@ const User = ({ match }: Props) => {
       <HStack
         justify='center'
         wrap='wrap'
-        bg='gray.800'
+        bg='surface'
         border='1px solid'
-        borderColor='gray.700'
+        borderColor='border-subtle'
         borderRadius='2xl'
         boxShadow='md'
         p={6}

@@ -39,9 +39,9 @@ const stack = [
 ];
 
 const cardProps = {
-  bg: 'gray.800',
+  bg: 'surface',
   border: '1px solid',
-  borderColor: 'gray.700',
+  borderColor: 'border-subtle',
   borderRadius: '2xl',
   boxShadow: 'md',
   p: 6,
@@ -57,7 +57,7 @@ const About = () => {
     <Box>
       <VStack textAlign='center' py={{ base: 6, md: 10 }} spacing={3}>
         <Heading as='h1' size='xl'>About Hublens</Heading>
-        <Text color='gray.400' fontSize='lg' maxW='600px'>
+        <Text color='muted' fontSize='lg' maxW='600px'>
           Hublens is a lightweight tool for searching GitHub users and
           exploring their public profiles and repositories, without leaving
           a single page.
@@ -72,7 +72,7 @@ const About = () => {
             <Heading as='h3' size='sm' mb={2}>
               {f.title}
             </Heading>
-            <Text color='gray.400'>{f.text}</Text>
+            <Text color='muted'>{f.text}</Text>
           </Box>
         ))}
       </SimpleGrid>
@@ -81,7 +81,7 @@ const About = () => {
         <Heading as='h2' size='md' mb={2}>
           How it works
         </Heading>
-        <Text color='gray.400'>
+        <Text color='muted'>
           Type a GitHub username into the search box on the home page.
           Hublens queries the GitHub API for matching accounts and displays
           them as cards. Click "View Profile" on any result to see full

@@ -1,6 +1,14 @@
 import React from 'react';
 import { Link as RouterLink, NavLink } from 'react-router-dom';
-import { Flex, Box, HStack, Link } from '@chakra-ui/react';
+import {
+  Flex,
+  Box,
+  HStack,
+  Link,
+  IconButton,
+  useColorMode,
+  useColorModeValue,
+} from '@chakra-ui/react';
 
 interface Props {
   icon?: string;
@@ -13,23 +21,28 @@ const navLinkStyle = {
   fontWeight: 600,
 };
 
-const activeStyle = {
-  ...navLinkStyle,
-  color: '#e6e8ee',
-  background: 'rgba(129, 140, 248, 0.16)',
-};
-
 const Navbar = ({ icon = 'fa fa-github', title = 'Hublens' }: Props) => {
+  const { colorMode, toggleColorMode } = useColorMode();
+  const navBg = useColorModeValue('rgba(255, 255, 255, 0.75)', 'rgba(26, 29, 36, 0.75)');
+  const activeColor = useColorModeValue('#1a202c', '#e6e8ee');
+  const hoverColor = useColorModeValue('brand.600', 'brand.300');
+
+  const activeStyle = {
+    ...navLinkStyle,
+    color: activeColor,
+    background: 'rgba(129, 140, 248, 0.16)',
+  };
+
   return (
     <Box
       as='nav'
       position='sticky'
       top={0}
       zIndex={10}
-      bg='rgba(26, 29, 36, 0.75)'
+      bg={navBg}
       backdropFilter='blur(10px)'
       borderBottom='1px solid'
-      borderColor='gray.700'
+      borderColor='border-subtle'
       mb={8}
     >
       <Flex
@@ -50,7 +63,7 @@ const Navbar = ({ icon = 'fa fa-github', title = 'Hublens' }: Props) => {
           fontSize='1.125rem'
           fontWeight='800'
           letterSpacing='-0.01em'
-          _hover={{ color: 'brand.300', textDecoration: 'none' }}
+          _hover={{ color: hoverColor, textDecoration: 'none' }}
           _focus={{ boxShadow: 'none' }}
           _focusVisible={{ boxShadow: '0 0 0 3px var(--chakra-colors-brand-400)' }}
         >
@@ -69,36 +82,46 @@ const Navbar = ({ icon = 'fa fa-github', title = 'Hublens' }: Props) => {
           </Flex>
           {title}
         </Link>
-        <HStack as='ul' spacing={1} listStyleType='none'>
-          <Box as='li'>
-            <Link
-              as={NavLink}
-              to='/'
-              exact
-              activeStyle={activeStyle}
-              style={navLinkStyle}
-              color='gray.400'
-              _hover={{ color: 'gray.100', bg: 'gray.700', textDecoration: 'none' }}
-              _focus={{ boxShadow: 'none' }}
-              _focusVisible={{ boxShadow: '0 0 0 3px var(--chakra-colors-brand-400)' }}
-            >
-              Home
-            </Link>
-          </Box>
-          <Box as='li'>
-            <Link
-              as={NavLink}
-              to='/about'
-              activeStyle={activeStyle}
-              style={navLinkStyle}
-              color='gray.400'
-              _hover={{ color: 'gray.100', bg: 'gray.700', textDecoration: 'none' }}
-              _focus={{ boxShadow: 'none' }}
-              _focusVisible={{ boxShadow: '0 0 0 3px var(--chakra-colors-brand-400)' }}
-            >
-              About
-            </Link>
-          </Box>
+        <HStack spacing={2}>
+          <HStack as='ul' spacing={1} listStyleType='none'>
+            <Box as='li'>
+              <Link
+                as={NavLink}
+                to='/'
+                exact
+                activeStyle={activeStyle}
+                style={navLinkStyle}
+                color='muted'
+                _hover={{ color: hoverColor, bg: 'border-subtle', textDecoration: 'none' }}
+                _focus={{ boxShadow: 'none' }}
+                _focusVisible={{ boxShadow: '0 0 0 3px var(--chakra-colors-brand-400)' }}
+              >
+                Home
+              </Link>
+            </Box>
+            <Box as='li'>
+              <Link
+                as={NavLink}
+                to='/about'
+                activeStyle={activeStyle}
+                style={navLinkStyle}
+                color='muted'
+                _hover={{ color: hoverColor, bg: 'border-subtle', textDecoration: 'none' }}
+                _focus={{ boxShadow: 'none' }}
+                _focusVisible={{ boxShadow: '0 0 0 3px var(--chakra-colors-brand-400)' }}
+              >
+                About
+              </Link>
+            </Box>
+          </HStack>
+          <IconButton
+            aria-label={colorMode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            icon={<i className={colorMode === 'dark' ? 'fa fa-sun-o' : 'fa fa-moon-o'} aria-hidden='true' />}
+            onClick={toggleColorMode}
+            variant='outline'
+            size='sm'
+            borderRadius='full'
+          />
         </HStack>
       </Flex>
     </Box>

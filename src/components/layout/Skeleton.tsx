@@ -18,9 +18,9 @@ export const UsersSkeleton = ({ count = 8 }: UsersSkeletonProps) => (
     {Array.from({ length: count }).map((_, i) => (
       <VStack
         key={i}
-        bg='gray.800'
+        bg='surface'
         border='1px solid'
-        borderColor='gray.700'
+        borderColor='border-subtle'
         borderRadius='2xl'
         p={6}
         spacing={3}
@@ -43,9 +43,9 @@ export const ProfileSkeleton = () => (
     <SimpleGrid
       columns={{ base: 1, md: 2 }}
       spacing={6}
-      bg='gray.800'
+      bg='surface'
       border='1px solid'
-      borderColor='gray.700'
+      borderColor='border-subtle'
       borderRadius='2xl'
       p={6}
       mb={4}
@@ -63,9 +63,9 @@ export const ProfileSkeleton = () => (
     <HStack
       justify='center'
       wrap='wrap'
-      bg='gray.800'
+      bg='surface'
       border='1px solid'
-      borderColor='gray.700'
+      borderColor='border-subtle'
       borderRadius='2xl'
       p={6}
       mb={4}
@@ -78,9 +78,9 @@ export const ProfileSkeleton = () => (
       {Array.from({ length: 3 }).map((_, i) => (
         <Box
           key={i}
-          bg='gray.800'
+          bg='surface'
           border='1px solid'
-          borderColor='gray.700'
+          borderColor='border-subtle'
           borderRadius='2xl'
           p={5}
         >

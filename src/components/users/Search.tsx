@@ -1,5 +1,5 @@
 import React, { useState, useContext, FormEvent, ChangeEvent } from 'react';
-import { Box, HStack, Input, Button, VisuallyHidden } from '@chakra-ui/react';
+import { Box, HStack, Input, Button, VisuallyHidden, useColorModeValue } from '@chakra-ui/react';
 import GithubContext from '../../context/github/githubContext';
 import AlertContext from '../../context/alert/alertContext';
 
@@ -21,6 +21,14 @@ const Search = () => {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => setText(e.target.value);
 
+  // Chakra's default solid+brand button is already mode-aware (light bg +
+  // dark text in dark mode), but brand.500 + white text falls just short of
+  // 4.5:1 in light mode. Only override light mode; leave dark mode as-is.
+  const solidOverride = useColorModeValue(
+    { bg: 'brand.600', _hover: { bg: 'brand.700' }, _active: { bg: 'brand.800' } },
+    {}
+  );
+
   return (
     <Box>
       <Box
@@ -28,9 +36,9 @@ const Search = () => {
         role='search'
         aria-label='Search GitHub users'
         onSubmit={onSubmit}
-        bg='gray.800'
+        bg='surface'
         border='1px solid'
-        borderColor='gray.700'
+        borderColor='border-subtle'
         borderRadius='full'
         boxShadow='lg'
         p={2}
@@ -55,6 +63,7 @@ const Search = () => {
           <Button
             type='submit'
             colorScheme='brand'
+            {...solidOverride}
             borderRadius='full'
             px={7}
             h='44px'

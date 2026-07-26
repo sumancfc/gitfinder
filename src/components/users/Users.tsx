@@ -52,9 +52,9 @@ const Users = () => {
     return (
       <Box
         textAlign='center'
-        bg='gray.800'
+        bg='surface'
         border='1px solid'
-        borderColor='gray.700'
+        borderColor='border-subtle'
         borderRadius='2xl'
         py={12}
         px={6}
@@ -63,12 +63,12 @@ const Users = () => {
           as='i'
           className='fa fa-github'
           fontSize='4xl'
-          color='gray.500'
+          color='muted'
           mb={3}
           display='block'
           aria-hidden='true'
         />
-        <Text color='gray.400'>Search for a GitHub username to see results here.</Text>
+        <Text color='muted'>Search for a GitHub username to see results here.</Text>
       </Box>
     );
   }

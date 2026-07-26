@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Heading, Link } from '@chakra-ui/react';
+import { Box, Heading, Link, useColorModeValue } from '@chakra-ui/react';
 import { Repo } from '../../types';
 
 interface Props {
@@ -7,11 +7,13 @@ interface Props {
 }
 
 const ReposItem = ({ repo }: Props) => {
+  const hoverColor = useColorModeValue('brand.600', 'brand.300');
+
   return (
     <Box
-      bg='gray.800'
+      bg='surface'
       border='1px solid'
-      borderColor='gray.700'
+      borderColor='border-subtle'
       borderRadius='2xl'
       boxShadow='md'
       p={5}
@@ -20,7 +22,7 @@ const ReposItem = ({ repo }: Props) => {
       _hover={{ transform: 'translateY(-6px)', boxShadow: 'dark-lg', borderColor: 'brand.400' }}
     >
       <Heading as='h3' size='sm'>
-        <Link href={repo.html_url} isExternal _hover={{ textDecoration: 'none', color: 'brand.300' }}>
+        <Link href={repo.html_url} isExternal _hover={{ textDecoration: 'none', color: hoverColor }}>
           <Box as='i' className='fa fa-code-fork' color='brand.400' mr={2} aria-hidden='true' />
           {repo.name}
         </Link>
